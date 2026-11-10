@@ -25,9 +25,13 @@ namespace Dot.Net.WebApi.Controllers
 
         [HttpGet]
         [Route("update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
+        public async Task<IActionResult> ShowUpdateForm(int id)
         {
-            return Ok();
+            BidListModel? bid = await _bidListService.FindByIdAsync(id);
+            if (bid == null)
+                return NotFound();
+            else
+                return Ok(bid);
         }
 
         [HttpPost]

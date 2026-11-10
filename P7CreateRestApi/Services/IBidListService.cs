@@ -5,5 +5,7 @@ namespace P7CreateRestApi.Services
     public interface IBidListService
     {
         Task<BidListModel> CreateAsync(BidListModel bidListModel);
+
+        Task<BidListModel?> FindByIdAsync(int id);
     }
 }
