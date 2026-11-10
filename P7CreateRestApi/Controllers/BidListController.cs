@@ -1,5 +1,7 @@
 using Dot.Net.WebApi.Domain;
 using Microsoft.AspNetCore.Mvc;
+using P7CreateRestApi.Models;
+using P7CreateRestApi.Services;
 
 namespace Dot.Net.WebApi.Controllers
 {
@@ -7,12 +9,18 @@ namespace Dot.Net.WebApi.Controllers
     [Route("[controller]")]
     public class BidListController : ControllerBase
     {
-        [HttpGet]
-        [Route("validate")]
-        public IActionResult Validate([FromBody] BidList bidList)
+        private readonly IBidListService _bidListService;
+        public BidListController(IBidListService bidListService)
         {
-            // TODO: check data valid and save to db, after saving return bid list
-            return Ok();
+            _bidListService = bidListService;
+        }        
+
+        [HttpPost]
+        [Route("validate")]
+        public async Task<IActionResult> Validate([FromBody] BidListModel bidListModel)
+        {            
+            BidListModel newBid = await _bidListService.CreateAsync(bidListModel);
+            return Ok(newBid);
         }
 
         [HttpGet]
