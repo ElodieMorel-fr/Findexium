@@ -7,5 +7,7 @@ namespace P7CreateRestApi.Repositories
         Task<BidList> AddAsync(BidList bidList);
 
         Task<BidList?> FindByIdAsync(int id);
+
+        Task UpdateAsync(BidList bidList);
     }
 }

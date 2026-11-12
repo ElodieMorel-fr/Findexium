@@ -7,5 +7,7 @@ namespace P7CreateRestApi.Services
         Task<BidListModel> CreateAsync(BidListModel bidListModel);
 
         Task<BidListModel?> FindByIdAsync(int id);
+
+        Task<BidListModel?> UpdateAsync(int id, BidListModel bidListModel);
     }
 }

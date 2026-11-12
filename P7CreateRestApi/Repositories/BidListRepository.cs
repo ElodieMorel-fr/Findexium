@@ -25,5 +25,11 @@ namespace P7CreateRestApi.Repositories
         {
             return await _dbContext.BidLists.FindAsync(id);
         }
+
+        public async Task UpdateAsync(BidList bidList)
+        {
+            _dbContext.BidLists.Update(bidList);
+            await _dbContext.SaveChangesAsync();            
+        }
     }
 }
