@@ -13,73 +13,72 @@ namespace P7CreateRestApi.Services
             _bidListRepository = bidListRepository;
         }
 
-        public async Task<BidListModel> CreateAsync(BidListModel bidListModel)
+        public async Task<BidListResponse> CreateAsync(BidListRequest bidListRequest)
         {
-            BidList bidList = MapToEntity(bidListModel);
+            BidList bidList = MapToEntity(bidListRequest);
             bidList.CreationName = string.Empty;  //TODO EML : mettre le nom de l'utilisateur connecté
             bidList.CreationDate = DateTime.Now;
            
-            bidList = await _bidListRepository.AddAsync(bidList);
-            bidListModel.Id = bidList.BidListId;           
-
-            return bidListModel;
+            await _bidListRepository.AddAsync(bidList);
+            return MapToResponse(bidList);            
         }
 
-        public async Task<BidListModel?> FindByIdAsync(int id)
+        public async Task<BidListResponse?> FindByIdAsync(int id)
         {
             BidList? bidList = await _bidListRepository.FindByIdAsync(id);
-            return bidList == null ? null : MapToModel(bidList);
+            return bidList == null ? null : MapToResponse(bidList);
             
 
         }
 
-        public async Task<BidListModel?> UpdateAsync(int id, BidListModel bidListModel)
+        public async Task<BidListResponse?> UpdateAsync(int id, BidListRequest bidListRequest)
         {            
             BidList? existingBidList = await _bidListRepository.FindByIdAsync(id);
             if (existingBidList == null)
                 return null;
             
-            MapToEntity(bidListModel, existingBidList);
+            MapToEntity(bidListRequest, existingBidList);
             existingBidList.RevisionName = string.Empty;  //TODO EML : mettre le nom de l'utilisateur connecté
             existingBidList.RevisionDate = DateTime.Now;
             await _bidListRepository.UpdateAsync(existingBidList);
 
-            return MapToModel(existingBidList);
+            return MapToResponse(existingBidList);
 
         }
 
-        private static BidList MapToEntity(BidListModel bidListModel, BidList? bidList = null)
+        private static BidList MapToEntity(BidListRequest bidListRequest, BidList? bidList = null)
         {
             if (bidList == null)
                 bidList = new BidList();
                         
-            bidList.Account = bidListModel.Account;
-            bidList.BidType = bidListModel.BidType;
-            bidList.BidQuantity = bidListModel.BidQuantity;
-            bidList.AskQuantity = bidListModel.AskQuantity;
-            bidList.Bid = bidListModel.Bid;
-            bidList.Ask = bidListModel.Ask;
-            bidList.Benchmark = bidListModel.Benchmark;
-            bidList.BidListDate = bidListModel.BidListDate;
-            bidList.Commentary = bidListModel.Commentary;
-            bidList.BidSecurity = bidListModel.BidSecurity;
-            bidList.BidStatus = bidListModel.BidStatus;
-            bidList.Trader = bidListModel.Trader;
-            bidList.Book = bidListModel.Book;
-            bidList.DealName = bidListModel.DealName;
-            bidList.DealType = bidListModel.DealType;
-            bidList.SourceListId = bidListModel.SourceListId;
-            bidList.Side = bidListModel.Side;
+            bidList.Account = bidListRequest.Account ?? bidList.Account;
+            bidList.BidType = bidListRequest.BidType ?? bidList.BidType;
+            bidList.BidQuantity = bidListRequest.BidQuantity ?? bidList.BidQuantity;
+            bidList.AskQuantity = bidListRequest.AskQuantity ?? bidList.AskQuantity;
+            bidList.Bid = bidListRequest.Bid ?? bidList.Bid;
+            bidList.Ask = bidListRequest.Ask ?? bidList.Ask;
+            bidList.Benchmark = bidListRequest.Benchmark ?? bidList.Benchmark;
+            bidList.BidListDate = bidListRequest.BidListDate ?? bidList.BidListDate;
+            bidList.Commentary = bidListRequest.Commentary ?? bidList.Commentary;
+            bidList.BidSecurity = bidListRequest.BidSecurity ?? bidList.BidSecurity;
+            bidList.BidStatus = bidListRequest.BidStatus ?? bidList.BidStatus;
+            bidList.Trader = bidListRequest.Trader ?? bidList.Trader;
+            bidList.Book = bidListRequest.Book ?? bidList.Book;
+            bidList.DealName = bidListRequest.DealName ?? bidList.DealName;
+            bidList.DealType = bidListRequest.DealType ?? bidList.DealType;
+            bidList.SourceListId = bidListRequest.SourceListId ?? bidList.SourceListId;
+            bidList.Side = bidListRequest.Side ?? bidList.Side;
 
             return bidList;
             
         }
+      
 
-        private static BidListModel MapToModel(BidList bidList)
-        {            
-            return new BidListModel()
+        private static BidListResponse MapToResponse(BidList bidList)
+        {
+            return new BidListResponse()
             {
-                Id = bidList.BidListId,
+                BidListId = bidList.BidListId,
                 Account = bidList.Account,
                 BidType = bidList.BidType,
                 BidQuantity = bidList.BidQuantity,
@@ -92,7 +91,11 @@ namespace P7CreateRestApi.Services
                 BidSecurity = bidList.BidSecurity,
                 BidStatus = bidList.BidStatus,
                 Trader = bidList.Trader,
-                Book = bidList.Book,               
+                Book = bidList.Book,
+                CreationName = bidList.CreationName,
+                CreationDate = bidList.CreationDate,
+                RevisionName = bidList.RevisionName,
+                RevisionDate = bidList.RevisionDate,
                 DealName = bidList.DealName,
                 DealType = bidList.DealType,
                 SourceListId = bidList.SourceListId,

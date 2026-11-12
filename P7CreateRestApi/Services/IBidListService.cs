@@ -4,10 +4,10 @@ namespace P7CreateRestApi.Services
 {
     public interface IBidListService
     {
-        Task<BidListModel> CreateAsync(BidListModel bidListModel);
+        Task<BidListResponse> CreateAsync(BidListRequest bidListRequest);
 
-        Task<BidListModel?> FindByIdAsync(int id);
+        Task<BidListResponse?> FindByIdAsync(int id);
 
-        Task<BidListModel?> UpdateAsync(int id, BidListModel bidListModel);
+        Task<BidListResponse?> UpdateAsync(int id, BidListRequest bidListRequest);
     }
 }

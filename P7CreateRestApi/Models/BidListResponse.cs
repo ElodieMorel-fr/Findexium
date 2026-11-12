@@ -1,8 +1,8 @@
 ﻿namespace P7CreateRestApi.Models
 {
-    public class BidListModel
+    public class BidListResponse
     {
-        public int Id { get; set; }
+        public int BidListId { get; set; }
         public string Account { get; set; } = string.Empty;
         public string BidType { get; set; } = string.Empty;
         public double? BidQuantity { get; set; }
@@ -15,7 +15,11 @@
         public string BidSecurity { get; set; } = string.Empty;
         public string BidStatus { get; set; } = string.Empty;
         public string Trader { get; set; } = string.Empty;
-        public string Book { get; set; } = string.Empty;        
+        public string Book { get; set; } = string.Empty;
+        public string CreationName { get; set; } = string.Empty;
+        public DateTime? CreationDate { get; set; }
+        public string RevisionName { get; set; } = string.Empty;
+        public DateTime? RevisionDate { get; set; }
         public string DealName { get; set; } = string.Empty;
         public string DealType { get; set; } = string.Empty;
         public string SourceListId { get; set; } = string.Empty;

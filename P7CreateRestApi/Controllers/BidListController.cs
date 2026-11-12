@@ -16,9 +16,9 @@ namespace P7CreateRestApi.Controllers
 
         [HttpPost]
         [Route("validate")]
-        public async Task<IActionResult> Validate([FromBody] BidListModel bidListModel)
+        public async Task<IActionResult> Validate([FromBody] BidListRequest bidListRequest)
         {            
-            BidListModel newBid = await _bidListService.CreateAsync(bidListModel);
+            BidListResponse newBid = await _bidListService.CreateAsync(bidListRequest);
             return Ok(newBid);
         }
 
@@ -26,19 +26,19 @@ namespace P7CreateRestApi.Controllers
         [Route("update/{id}")]
         public async Task<IActionResult> ShowUpdateForm(int id)
         {
-            BidListModel? bid = await _bidListService.FindByIdAsync(id);
+            BidListResponse? bid = await _bidListService.FindByIdAsync(id);
             if (bid == null)
                 return NotFound();
             else
                 return Ok(bid);
         }
 
-        [HttpPut]
+        [HttpPatch]
         [Route("update/{id}")]
-        public async Task<IActionResult> UpdateBid(int id, [FromBody] BidListModel bidListModel)
+        public async Task<IActionResult> UpdateBid(int id, [FromBody] BidListRequest bidListRequest)
         {
             // TODO: check required fields, if valid call service to update Bid and return list Bid
-            BidListModel? bid = await _bidListService.UpdateAsync(id, bidListModel);
+            BidListResponse? bid = await _bidListService.UpdateAsync(id, bidListRequest);
             if (bid == null)
                 return NotFound();
 
