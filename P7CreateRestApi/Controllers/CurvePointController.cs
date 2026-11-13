@@ -7,11 +7,11 @@ namespace P7CreateRestApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class CurveController : ControllerBase
+    public class CurvePointController : ControllerBase
     {
         private readonly ICurvePointService _curvePointService;
 
-        public CurveController(ICurvePointService curvePointService)
+        public CurvePointController(ICurvePointService curvePointService)
         {
             _curvePointService = curvePointService;
         }
