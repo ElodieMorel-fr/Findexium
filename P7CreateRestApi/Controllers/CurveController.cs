@@ -35,12 +35,16 @@ namespace P7CreateRestApi.Controllers
                 return Ok(curvePoint);
         }
 
-        [HttpPost]
+        [HttpPatch]
         [Route("update/{id}")]
-        public IActionResult UpdateCurvePoint(int id, [FromBody] CurvePoint curvePoint)
+        public async Task<IActionResult> UpdateCurvePoint(int id, [FromBody] CurvePointRequest curvePointRequest)
         {
             // TODO: check required fields, if valid call service to update Curve and return Curve list
-            return Ok();
+            CurvePointResponse? curvePoint = await _curvePointService.UpdateAsync(id, curvePointRequest);
+            if (curvePoint == null)
+                return NotFound();
+
+            return Ok(curvePoint);
         }
 
         [HttpDelete]

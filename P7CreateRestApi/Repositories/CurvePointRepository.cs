@@ -24,5 +24,11 @@ namespace P7CreateRestApi.Repositories
         {
             return await _dbContext.CurvePoints.FindAsync(id);
         }
+
+        public async Task UpdateAsync(CurvePoint curvePoint)
+        {
+            _dbContext.CurvePoints.Update(curvePoint);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

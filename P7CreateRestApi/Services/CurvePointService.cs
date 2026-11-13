@@ -29,12 +29,25 @@ namespace P7CreateRestApi.Services
 
         }
 
+        public async Task<CurvePointResponse?> UpdateAsync(int id, CurvePointRequest curvePointRequest)
+        {
+            CurvePoint? existingCurvePoint = await _curvePointRepository.FindByIdAsync(id);
+            if (existingCurvePoint == null)
+                return null;
+
+            MapToEntity(curvePointRequest, existingCurvePoint);
+            await _curvePointRepository.UpdateAsync(existingCurvePoint);
+
+            return MapToResponse(existingCurvePoint);
+
+        }
+
         private static CurvePoint MapToEntity(CurvePointRequest curvePointRequest, CurvePoint? curvePoint = null)
         {
             if (curvePoint == null)
                 curvePoint = new CurvePoint();
                         
-            curvePoint.CurveId = curvePointRequest.CurveId ?? curvePoint.CurveId;
+            //curvePoint.CurveId = curvePointRequest.CurveId ?? curvePoint.CurveId; //TODO EML : à mon avis, cet identifiant n'est pas modifiable!
             curvePoint.AsOfDate = curvePointRequest.AsOfDate ?? curvePoint.AsOfDate;
             curvePoint.Term = curvePointRequest.Term ?? curvePoint.Term;
             curvePoint.CurvePointValue = curvePointRequest.CurvePointValue ?? curvePoint.CurvePointValue;

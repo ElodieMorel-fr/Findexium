@@ -7,5 +7,8 @@ namespace P7CreateRestApi.Services
         Task<CurvePointResponse> CreateAsync(CurvePointRequest curvePointRequest);
 
         Task<CurvePointResponse?> FindByIdAsync(int id);
+
+        Task<CurvePointResponse?> UpdateAsync(int id, CurvePointRequest curvePointRequest);
+
     }
 }
