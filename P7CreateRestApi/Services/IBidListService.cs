@@ -9,5 +9,7 @@ namespace P7CreateRestApi.Services
         Task<BidListResponse?> FindByIdAsync(int id);
 
         Task<BidListResponse?> UpdateAsync(int id, BidListRequest bidListRequest);
+
+        Task<bool> DeleteAsync(int id);
     }
 }

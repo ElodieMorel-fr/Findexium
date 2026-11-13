@@ -31,5 +31,12 @@ namespace P7CreateRestApi.Repositories
             _dbContext.BidLists.Update(bidList);
             await _dbContext.SaveChangesAsync();            
         }
+
+        public async Task DeleteAsync(BidList bidList)
+        {
+            _dbContext.BidLists.Remove(bidList);
+            await _dbContext.SaveChangesAsync();
+                
+        }
     }
 }

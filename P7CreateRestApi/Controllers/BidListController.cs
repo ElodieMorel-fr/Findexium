@@ -47,8 +47,11 @@ namespace P7CreateRestApi.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult DeleteBid(int id)
+        public async Task<IActionResult> DeleteBid(int id)
         {
+            if(!await _bidListService.DeleteAsync(id))
+                return NotFound();
+            
             return Ok();
         }
     }

@@ -46,6 +46,17 @@ namespace P7CreateRestApi.Services
 
         }
 
+        public async Task<bool> DeleteAsync(int id)
+        {
+            BidList? bidList = await _bidListRepository.FindByIdAsync(id);
+            if (bidList == null)
+                return false;
+
+            await _bidListRepository.DeleteAsync(bidList);
+            return true;
+
+        }
+
         private static BidList MapToEntity(BidListRequest bidListRequest, BidList? bidList = null)
         {
             if (bidList == null)
@@ -73,7 +84,6 @@ namespace P7CreateRestApi.Services
             
         }
       
-
         private static BidListResponse MapToResponse(BidList bidList)
         {
             return new BidListResponse()
