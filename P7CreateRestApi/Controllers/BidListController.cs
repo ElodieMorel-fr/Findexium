@@ -1,39 +1,57 @@
-using Dot.Net.WebApi.Domain;
 using Microsoft.AspNetCore.Mvc;
+using P7CreateRestApi.Models;
+using P7CreateRestApi.Services;
 
-namespace Dot.Net.WebApi.Controllers
+namespace P7CreateRestApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class BidListController : ControllerBase
     {
-        [HttpGet]
-        [Route("validate")]
-        public IActionResult Validate([FromBody] BidList bidList)
+        private readonly IBidListService _bidListService;
+        public BidListController(IBidListService bidListService)
         {
-            // TODO: check data valid and save to db, after saving return bid list
-            return Ok();
-        }
-
-        [HttpGet]
-        [Route("update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
-        {
-            return Ok();
-        }
+            _bidListService = bidListService;
+        }        
 
         [HttpPost]
+        [Route("validate")]
+        public async Task<IActionResult> Validate([FromBody] BidListRequest bidListRequest)
+        {            
+            BidListResponse newBid = await _bidListService.CreateAsync(bidListRequest);
+            return Ok(newBid);
+        }
+
+        [HttpGet]
         [Route("update/{id}")]
-        public IActionResult UpdateBid(int id, [FromBody] BidList bidList)
+        public async Task<IActionResult> ShowUpdateForm(int id)
+        {
+            BidListResponse? bid = await _bidListService.FindByIdAsync(id);
+            if (bid == null)
+                return NotFound();
+            else
+                return Ok(bid);
+        }
+
+        [HttpPatch]
+        [Route("update/{id}")]
+        public async Task<IActionResult> UpdateBid(int id, [FromBody] BidListRequest bidListRequest)
         {
             // TODO: check required fields, if valid call service to update Bid and return list Bid
-            return Ok();
+            BidListResponse? bid = await _bidListService.UpdateAsync(id, bidListRequest);
+            if (bid == null)
+                return NotFound();
+
+            return Ok(bid);
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult DeleteBid(int id)
+        public async Task<IActionResult> DeleteBid(int id)
         {
+            if(!await _bidListService.DeleteAsync(id))
+                return NotFound();
+            
             return Ok();
         }
     }

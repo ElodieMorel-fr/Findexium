@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
-using Dot.Net.WebApi.Domain;
+using P7CreateRestApi.Domain;
 
-namespace Dot.Net.WebApi.Data
+namespace P7CreateRestApi.Data
 {
     public class LocalDbContext : DbContext
     {
@@ -11,7 +11,10 @@ namespace Dot.Net.WebApi.Data
         {
             base.OnModelCreating(builder);
         }
+              
+        //TODO EML : User management will be implemented in story 6
+        //public DbSet<User> Users { get; set;}
 
-        public DbSet<User> Users { get; set;}
+        public DbSet<BidList> BidLists { get; set; }
     }
 }
