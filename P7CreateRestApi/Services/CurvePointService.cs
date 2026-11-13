@@ -22,6 +22,13 @@ namespace P7CreateRestApi.Services
             return MapToResponse(curvePoint);
         }
 
+        public async Task<CurvePointResponse?> FindByIdAsync(int id)
+        {
+            CurvePoint? curvePoint = await _curvePointRepository.FindByIdAsync(id);
+            return curvePoint == null ? null : MapToResponse(curvePoint);
+
+        }
+
         private static CurvePoint MapToEntity(CurvePointRequest curvePointRequest, CurvePoint? curvePoint = null)
         {
             if (curvePoint == null)

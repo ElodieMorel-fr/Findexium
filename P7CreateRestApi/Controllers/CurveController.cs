@@ -26,10 +26,13 @@ namespace P7CreateRestApi.Controllers
 
         [HttpGet]
         [Route("update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
+        public async Task<IActionResult> ShowUpdateForm(int id)
         {
-            // TODO: get CurvePoint by Id and to model then show to the form
-            return Ok();
+            CurvePointResponse? curvePoint = await _curvePointService.FindByIdAsync(id);
+            if (curvePoint == null)
+                return NotFound();
+            else
+                return Ok(curvePoint);
         }
 
         [HttpPost]
