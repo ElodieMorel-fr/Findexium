@@ -109,7 +109,35 @@ namespace P7CreateRestApi.Migrations
 
                     b.HasKey("BidListId");
 
-                    b.ToTable("BidLists", (string)null);
+                    b.ToTable("BidLists");
+                });
+
+            modelBuilder.Entity("P7CreateRestApi.Domain.CurvePoint", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<DateTime?>("AsOfDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<byte?>("CurveId")
+                        .HasColumnType("tinyint");
+
+                    b.Property<double?>("CurvePointValue")
+                        .HasColumnType("float");
+
+                    b.Property<double?>("Term")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("CurvePoints");
                 });
 #pragma warning restore 612, 618
         }
