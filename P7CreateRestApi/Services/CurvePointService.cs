@@ -42,6 +42,18 @@ namespace P7CreateRestApi.Services
 
         }
 
+        public async Task<bool> DeleteAsync(int id)
+        {
+            CurvePoint? curvePoint = await _curvePointRepository.FindByIdAsync(id);
+            if (curvePoint == null)
+                return false;
+
+            await _curvePointRepository.DeleteAsync(curvePoint);
+            return true;
+
+        }
+
+
         private static CurvePoint MapToEntity(CurvePointRequest curvePointRequest, CurvePoint? curvePoint = null)
         {
             if (curvePoint == null)

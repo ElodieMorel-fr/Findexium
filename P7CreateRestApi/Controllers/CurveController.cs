@@ -49,9 +49,11 @@ namespace P7CreateRestApi.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult DeleteBid(int id)
+        public async Task<IActionResult> DeleteCurvePoint(int id)
         {
-            // TODO: Find Curve by Id and delete the Curve, return to Curve list
+            if (!await _curvePointService.DeleteAsync(id))
+                return NotFound();
+
             return Ok();
         }
     }

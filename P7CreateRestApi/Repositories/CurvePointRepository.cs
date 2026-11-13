@@ -30,5 +30,12 @@ namespace P7CreateRestApi.Repositories
             _dbContext.CurvePoints.Update(curvePoint);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task DeleteAsync(CurvePoint curvePoint)
+        {
+            _dbContext.CurvePoints.Remove(curvePoint);
+            await _dbContext.SaveChangesAsync();
+
+        }
     }
 }

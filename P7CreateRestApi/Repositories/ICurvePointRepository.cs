@@ -9,5 +9,7 @@ namespace P7CreateRestApi.Repositories
         Task<CurvePoint?> FindByIdAsync(int id);
 
         Task UpdateAsync(CurvePoint curvePoint);
+
+        Task DeleteAsync(CurvePoint curvePoint);
     }
 }

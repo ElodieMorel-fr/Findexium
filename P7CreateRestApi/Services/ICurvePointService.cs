@@ -9,6 +9,8 @@ namespace P7CreateRestApi.Services
         Task<CurvePointResponse?> FindByIdAsync(int id);
 
         Task<CurvePointResponse?> UpdateAsync(int id, CurvePointRequest curvePointRequest);
+        
+        Task<bool> DeleteAsync(int id);
 
     }
 }
