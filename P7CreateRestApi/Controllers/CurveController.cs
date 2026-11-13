@@ -1,5 +1,7 @@
 using P7CreateRestApi.Domain;
 using Microsoft.AspNetCore.Mvc;
+using P7CreateRestApi.Models;
+using P7CreateRestApi.Services;
 
 namespace P7CreateRestApi.Controllers
 {
@@ -7,28 +9,19 @@ namespace P7CreateRestApi.Controllers
     [Route("[controller]")]
     public class CurveController : ControllerBase
     {
-        // TODO: Inject Curve Point service
+        private readonly ICurvePointService _curvePointService;
 
-        [HttpGet]
-        [Route("list")]
-        public IActionResult Home()
+        public CurveController(ICurvePointService curvePointService)
         {
-            return Ok();
+            _curvePointService = curvePointService;
         }
-
-        [HttpGet]
-        [Route("add")]
-        public IActionResult AddCurvePoint([FromBody]CurvePoint curvePoint)
-        {
-            return Ok();
-        }
-
-        [HttpGet]
+       
+        [HttpPost]
         [Route("validate")]
-        public IActionResult Validate([FromBody]CurvePoint curvePoint)
+        public async Task<IActionResult> Validate([FromBody]CurvePointRequest curvePointRequest)
         {
-            // TODO: check data valid and save to db, after saving return bid list
-            return Ok();
+            CurvePointResponse newCurvePoint = await _curvePointService.CreateAsync(curvePointRequest);
+            return Ok(newCurvePoint);
         }
 
         [HttpGet]
