@@ -35,6 +35,11 @@ namespace P7CreateRestApi.Repositories
 
         }
 
+        public async Task<User?> FindByIdAsync(int id)
+        {
+            return await _dbContext.Users.FindAsync(id);
+        }
+
         public User FindById(int id)
         {
             return null;

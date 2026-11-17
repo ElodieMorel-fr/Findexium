@@ -20,6 +20,13 @@ namespace P7CreateRestApi.Services
             return MapToResponse(user);
         }
 
+        public async Task<UserResponse?> FindByIdAsync(int id)
+        {
+            User? user = await _userRepository.FindByIdAsync(id);
+            return user == null ? null : MapToResponse(user);
+
+        }
+
         private static User MapToEntity(UserRequest userRequest, User? user = null)
         {
             if (user == null)

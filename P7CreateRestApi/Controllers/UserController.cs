@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using P7CreateRestApi.Models;
 using P7CreateRestApi.Services;
+using System.Security.Cryptography;
 
 namespace P7CreateRestApi.Controllers
 {
@@ -24,19 +25,18 @@ namespace P7CreateRestApi.Controllers
             return Ok(newUser);
         }
 
-        /*[HttpGet]
-        [Route("update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetUserById(int id)
         {
-            User user = _userRepository.FindById(id);
-            
+            UserResponse? user = await _userService.FindByIdAsync(id);
             if (user == null)
-                throw new ArgumentException("Invalid user Id:" + id);
-
-            return Ok();
+                return NotFound("Invalid user Id:" + id);
+            else
+                return Ok(user);
         }
 
-        [HttpPost]
+        /*[HttpPost]
         [Route("update/{id}")]
         public IActionResult UpdateUser(int id, [FromBody] User user)
         {
