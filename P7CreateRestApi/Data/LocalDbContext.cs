@@ -19,5 +19,6 @@ namespace P7CreateRestApi.Data
         public DbSet<CurvePoint> CurvePoints { get; set; }
         public DbSet<Rating> Ratings { get; set; }
         public DbSet<RuleName> RuleNames { get; set; }
+        public DbSet<Trade> Trades { get; set; }
     }
 }

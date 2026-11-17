@@ -1,5 +1,6 @@
-using P7CreateRestApi.Domain;
 using Microsoft.AspNetCore.Mvc;
+using P7CreateRestApi.Models;
+using P7CreateRestApi.Services;
 
 namespace P7CreateRestApi.Controllers
 {
@@ -7,52 +8,49 @@ namespace P7CreateRestApi.Controllers
     [Route("[controller]")]
     public class TradeController : ControllerBase
     {
-        // TODO: Inject Trade service
+        private readonly ITradeService _tradeService;
 
-        [HttpGet]
-        [Route("list")]
-        public IActionResult Home()
+        public TradeController(ITradeService tradeService)
         {
-            // TODO: find all Trade, add to model
-            return Ok();
+            _tradeService = tradeService;
+        }
+        
+        [HttpPost]        
+        public async Task<IActionResult> AddTrade([FromBody] TradeRequest tradeRequest)
+        {
+            TradeResponse newTrade = await _tradeService.CreateAsync(tradeRequest);
+            return Ok(newTrade);
         }
 
         [HttpGet]
-        [Route("add")]
-        public IActionResult AddTrade([FromBody]Trade trade)
+        [Route("{id}")]
+        public async Task<IActionResult> GetTradeById(int id)
         {
-            return Ok();
+            TradeResponse? trade = await _tradeService.FindByIdAsync(id);
+            if (trade == null)
+                return NotFound();
+            else
+                return Ok(trade);
         }
 
-        [HttpGet]
-        [Route("validate")]
-        public IActionResult Validate([FromBody]Trade trade)
-        {
-            // TODO: check data valid and save to db, after saving return Trade list
-            return Ok();
-        }
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateTrade(int id, [FromBody] TradeRequest tradeRequest)
+        {            
+            TradeResponse? trade = await _tradeService.UpdateAsync(id, tradeRequest);
+            if (trade == null)
+                return NotFound();
 
-        [HttpGet]
-        [Route("update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
-        {
-            // TODO: get Trade by Id and to model then show to the form
-            return Ok();
-        }
-
-        [HttpPost]
-        [Route("update/{id}")]
-        public IActionResult UpdateTrade(int id, [FromBody] Trade trade)
-        {
-            // TODO: check required fields, if valid call service to update Trade and return Trade list
-            return Ok();
+            return Ok(trade);
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult DeleteTrade(int id)
+        public async Task<IActionResult> DeleteTrade(int id)
         {
-            // TODO: Find Trade by Id and delete the Trade, return to Trade list
+            if (!await _tradeService.DeleteAsync(id))
+                return NotFound();
+
             return Ok();
         }
     }
