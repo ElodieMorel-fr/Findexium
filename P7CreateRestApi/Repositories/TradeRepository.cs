@@ -25,5 +25,11 @@ namespace P7CreateRestApi.Repositories
         {
             return await _dbContext.Trades.FindAsync(id);
         }
+
+        public async Task UpdateAsync(Trade trade)
+        {
+            _dbContext.Trades.Update(trade);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

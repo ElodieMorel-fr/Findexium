@@ -34,12 +34,15 @@ namespace P7CreateRestApi.Controllers
                 return Ok(trade);
         }
 
-        [HttpPost]
-        [Route("update/{id}")]
-        public IActionResult UpdateTrade(int id, [FromBody] Trade trade)
-        {
-            // TODO: check required fields, if valid call service to update Trade and return Trade list
-            return Ok();
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateTrade(int id, [FromBody] TradeRequest tradeRequest)
+        {            
+            TradeResponse? trade = await _tradeService.UpdateAsync(id, tradeRequest);
+            if (trade == null)
+                return NotFound();
+
+            return Ok(trade);
         }
 
         [HttpDelete]

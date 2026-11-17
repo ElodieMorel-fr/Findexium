@@ -30,6 +30,21 @@ namespace P7CreateRestApi.Services
 
         }
 
+        public async Task<TradeResponse?> UpdateAsync(int id, TradeRequest tradeRequest)
+        {
+            Trade? existingTrade = await _tradeRepository.FindByIdAsync(id);
+            if (existingTrade == null)
+                return null;
+
+            MapToEntity(tradeRequest, existingTrade);
+            existingTrade.RevisionName = string.Empty;  //TODO EML : mettre le nom de l'utilisateur connecté
+            existingTrade.RevisionDate = DateTime.Now;
+            await _tradeRepository.UpdateAsync(existingTrade);
+
+            return MapToResponse(existingTrade);
+
+        }
+
         private static Trade MapToEntity(TradeRequest tradeRequest, Trade? trade = null)
         {
             if (trade == null)
