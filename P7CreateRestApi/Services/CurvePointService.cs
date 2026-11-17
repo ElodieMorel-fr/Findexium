@@ -59,10 +59,10 @@ namespace P7CreateRestApi.Services
             if (curvePoint == null)
                 curvePoint = new CurvePoint();
                         
-            //curvePoint.CurveId = curvePointRequest.CurveId ?? curvePoint.CurveId; //TODO EML : à mon avis, cet identifiant n'est pas modifiable!
-            curvePoint.AsOfDate = curvePointRequest.AsOfDate ?? curvePoint.AsOfDate;
-            curvePoint.Term = curvePointRequest.Term ?? curvePoint.Term;
-            curvePoint.CurvePointValue = curvePointRequest.CurvePointValue ?? curvePoint.CurvePointValue;
+            curvePoint.CurveId = curvePointRequest.CurveId;
+            curvePoint.AsOfDate = curvePointRequest.AsOfDate;
+            curvePoint.Term = curvePointRequest.Term;
+            curvePoint.CurvePointValue = curvePointRequest.CurvePointValue;
 
             return curvePoint;
         }
