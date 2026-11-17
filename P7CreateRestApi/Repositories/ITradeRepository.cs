@@ -9,5 +9,7 @@ namespace P7CreateRestApi.Repositories
         Task<Trade?> FindByIdAsync(int id);
 
         Task UpdateAsync(Trade trade);
+
+        Task DeleteAsync(Trade trade);
     }
 }

@@ -1,4 +1,3 @@
-using P7CreateRestApi.Domain;
 using Microsoft.AspNetCore.Mvc;
 using P7CreateRestApi.Models;
 using P7CreateRestApi.Services;
@@ -47,9 +46,11 @@ namespace P7CreateRestApi.Controllers
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult DeleteTrade(int id)
+        public async Task<IActionResult> DeleteTrade(int id)
         {
-            // TODO: Find Trade by Id and delete the Trade, return to Trade list
+            if (!await _tradeService.DeleteAsync(id))
+                return NotFound();
+
             return Ok();
         }
     }

@@ -45,6 +45,17 @@ namespace P7CreateRestApi.Services
 
         }
 
+        public async Task<bool> DeleteAsync(int id)
+        {
+            Trade? trade = await _tradeRepository.FindByIdAsync(id);
+            if (trade == null)
+                return false;
+
+            await _tradeRepository.DeleteAsync(trade);
+            return true;
+
+        }
+
         private static Trade MapToEntity(TradeRequest tradeRequest, Trade? trade = null)
         {
             if (trade == null)

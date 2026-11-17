@@ -31,5 +31,12 @@ namespace P7CreateRestApi.Repositories
             _dbContext.Trades.Update(trade);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task DeleteAsync(Trade trade)
+        {
+            _dbContext.Trades.Remove(trade);
+            await _dbContext.SaveChangesAsync();
+
+        }
     }
 }
