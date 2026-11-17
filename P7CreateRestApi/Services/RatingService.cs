@@ -42,6 +42,17 @@ namespace P7CreateRestApi.Services
 
         }
 
+        public async Task<bool> DeleteAsync(int id)
+        {
+            Rating? rating = await _ratingRepository.FindByIdAsync(id);
+            if (rating == null)
+                return false;
+
+            await _ratingRepository.DeleteAsync(rating);
+            return true;
+
+        }
+
         private static Rating MapToEntity(RatingRequest ratingRequest, Rating? rating = null)
         {
             if (rating == null)

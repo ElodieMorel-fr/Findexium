@@ -30,5 +30,11 @@ namespace P7CreateRestApi.Repositories
             _dbContext.Ratings.Update(rating);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task DeleteAsync(Rating rating)
+        {
+            _dbContext.Ratings.Remove(rating);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

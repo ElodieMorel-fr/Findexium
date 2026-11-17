@@ -9,5 +9,7 @@ namespace P7CreateRestApi.Services
         Task<RatingResponse?> FindByIdAsync(int id);
 
         Task<RatingResponse?> UpdateAsync(int id, RatingRequest ratingRequest);
+
+        Task<bool> DeleteAsync(int id);
     }
 }
