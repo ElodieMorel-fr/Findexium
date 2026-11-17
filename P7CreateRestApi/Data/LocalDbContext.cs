@@ -17,5 +17,6 @@ namespace P7CreateRestApi.Data
 
         public DbSet<BidList> BidLists { get; set; }
         public DbSet<CurvePoint> CurvePoints { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
     }
 }

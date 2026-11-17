@@ -1,0 +1,84 @@
+﻿using P7CreateRestApi.Domain;
+using P7CreateRestApi.Models;
+using P7CreateRestApi.Repositories;
+
+namespace P7CreateRestApi.Services
+{
+    public class RatingService : IRatingService
+    {
+        private readonly IRatingRepository _ratingRepository;
+
+        public RatingService(IRatingRepository ratingRepository)
+        {
+            _ratingRepository = ratingRepository;
+        }
+
+        public async Task<RatingResponse> CreateAsync(RatingRequest ratingRequest)
+        {
+            Rating rating = MapToEntity(ratingRequest);
+            
+
+            await _ratingRepository.AddAsync(rating);
+            return MapToResponse(rating);
+        }
+
+        public async Task<RatingResponse?> FindByIdAsync(int id)
+        {
+            Rating? rating = await _ratingRepository.FindByIdAsync(id);
+            return rating == null ? null : MapToResponse(rating);
+
+        }
+
+        public async Task<RatingResponse?> UpdateAsync(int id, RatingRequest ratingRequest)
+        {
+            Rating? existingRating = await _ratingRepository.FindByIdAsync(id);
+            if (existingRating == null)
+                return null;
+
+            MapToEntity(ratingRequest, existingRating);            
+            await _ratingRepository.UpdateAsync(existingRating);
+
+            return MapToResponse(existingRating);
+
+        }
+
+        public async Task<bool> DeleteAsync(int id)
+        {
+            Rating? rating = await _ratingRepository.FindByIdAsync(id);
+            if (rating == null)
+                return false;
+
+            await _ratingRepository.DeleteAsync(rating);
+            return true;
+
+        }
+
+        private static Rating MapToEntity(RatingRequest ratingRequest, Rating? rating = null)
+        {
+            if (rating == null)
+                rating = new Rating();
+
+            rating.MoodysRating = ratingRequest.MoodysRating;
+            rating.SandPRating = ratingRequest.SandPRating;
+            rating.FitchRating = ratingRequest.FitchRating;
+            rating.OrderNumber = ratingRequest.OrderNumber;
+
+            return rating;
+
+        }
+
+        private static RatingResponse MapToResponse(Rating rating)
+        {
+            return new RatingResponse()
+            {
+                Id = rating.Id,
+                MoodysRating = rating.MoodysRating,
+                SandPRating = rating.SandPRating,
+                FitchRating = rating.FitchRating,
+                OrderNumber = rating.OrderNumber,
+
+            };
+
+        }
+    }
+}
