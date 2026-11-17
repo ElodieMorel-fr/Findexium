@@ -26,6 +26,8 @@ builder.Services.AddScoped<IRuleNameRepository, RuleNameRepository>();
 builder.Services.AddScoped<IRuleNameService, RuleNameService>();
 builder.Services.AddScoped<ITradeRepository, TradeRepository>();
 builder.Services.AddScoped<ITradeService, TradeService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 var app = builder.Build();
 

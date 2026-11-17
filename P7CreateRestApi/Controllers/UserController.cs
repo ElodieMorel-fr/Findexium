@@ -1,49 +1,30 @@
-using P7CreateRestApi.Domain;
-using P7CreateRestApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using P7CreateRestApi.Models;
+using P7CreateRestApi.Services;
 
 namespace P7CreateRestApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class UserController : ControllerBase
-    {
-        private UserRepository _userRepository;
+    {        
+        private readonly IUserService _userService;
 
-        public UserController(UserRepository userRepository)
+        public UserController(IUserService userService)
         {
-            _userRepository = userRepository;
+     
+            _userService = userService;
+        }
+        
+
+        [HttpPost]        
+        public async Task<IActionResult> AddUser([FromBody] UserRequest userRequest)
+        {
+            UserResponse newUser = await _userService.CreateAsync(userRequest);
+            return Ok(newUser);
         }
 
-        [HttpGet]
-        [Route("list")]
-        public IActionResult Home()
-        {
-            return Ok();
-        }
-
-        [HttpGet]
-        [Route("add")]
-        public IActionResult AddUser([FromBody]User user)
-        {
-            return Ok();
-        }
-
-        [HttpGet]
-        [Route("validate")]
-        public IActionResult Validate([FromBody]User user)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-           
-           _userRepository.Add(user);
-
-            return Ok();
-        }
-
-        [HttpGet]
+        /*[HttpGet]
         [Route("update/{id}")]
         public IActionResult ShowUpdateForm(int id)
         {
@@ -80,6 +61,6 @@ namespace P7CreateRestApi.Controllers
         public async Task<ActionResult<List<User>>> GetAllUserArticles()
         {
             return Ok();
-        }
+        }*/
     }
 }

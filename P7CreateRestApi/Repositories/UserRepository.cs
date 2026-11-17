@@ -1,16 +1,15 @@
 using P7CreateRestApi.Data;
 using P7CreateRestApi.Domain;
-using Microsoft.EntityFrameworkCore;
 
 namespace P7CreateRestApi.Repositories
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
-        public LocalDbContext DbContext { get; }
+        private readonly LocalDbContext _dbContext;
 
         public UserRepository(LocalDbContext dbContext)
         {
-            DbContext = dbContext;
+            _dbContext = dbContext;
         }
 
         //TODO EML : User management will be implemented in story 6
@@ -27,8 +26,13 @@ namespace P7CreateRestApi.Repositories
             return await DbContext.Users.ToListAsync();
         }*/
 
-        public void Add(User user)
+        public async Task<User> AddAsync(User user)
         {
+            await _dbContext.Users.AddAsync(user);
+            await _dbContext.SaveChangesAsync();
+
+            return user;
+
         }
 
         public User FindById(int id)
