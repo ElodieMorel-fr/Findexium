@@ -1,5 +1,7 @@
 using P7CreateRestApi.Domain;
 using Microsoft.AspNetCore.Mvc;
+using P7CreateRestApi.Services;
+using P7CreateRestApi.Models;
 
 namespace P7CreateRestApi.Controllers
 {
@@ -7,29 +9,19 @@ namespace P7CreateRestApi.Controllers
     [Route("[controller]")]
     public class RatingController : ControllerBase
     {
-        // TODO: Inject Rating service
+        private readonly IRatingService _ratingService;
 
-        [HttpGet]
-        [Route("list")]
-        public IActionResult Home()
+        public RatingController(IRatingService ratingService)
         {
-            // TODO: find all Rating, add to model
-            return Ok();
+            _ratingService = ratingService;
         }
 
-        [HttpGet]
-        [Route("add")]
-        public IActionResult AddRatingForm([FromBody]Rating rating)
+       
+        [HttpPost]        
+        public async Task<IActionResult> AddRating([FromBody]RatingRequest ratingRequest)
         {
-            return Ok();
-        }
-
-        [HttpGet]
-        [Route("validate")]
-        public IActionResult Validate([FromBody]Rating rating)
-        {
-            // TODO: check data valid and save to db, after saving return Rating list
-            return Ok();
+            RatingResponse newRating = await _ratingService.CreateAsync(ratingRequest);
+            return Ok(newRating);
         }
 
         [HttpGet]
