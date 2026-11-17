@@ -25,11 +25,14 @@ namespace P7CreateRestApi.Controllers
         }
 
         [HttpGet]
-        [Route("update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
+        [Route("{id}")]
+        public async Task<IActionResult> GetRatingByID(int id)
         {
-            // TODO: get Rating by Id and to model then show to the form
-            return Ok();
+            RatingResponse? rating = await _ratingService.FindByIdAsync(id);
+            if (rating == null)
+                return NotFound();
+            else
+                return Ok(rating);
         }
 
         [HttpPost]

@@ -19,7 +19,11 @@ namespace P7CreateRestApi.Repositories
             await _dbContext.SaveChangesAsync();
 
             return rating;
+        }
 
+        public async Task<Rating?> FindByIdAsync(int id)
+        {
+            return await _dbContext.Ratings.FindAsync(id);
         }
     }
 }

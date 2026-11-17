@@ -22,6 +22,13 @@ namespace P7CreateRestApi.Services
             return MapToResponse(rating);
         }
 
+        public async Task<RatingResponse?> FindByIdAsync(int id)
+        {
+            Rating? rating = await _ratingRepository.FindByIdAsync(id);
+            return rating == null ? null : MapToResponse(rating);
+
+        }
+
         private static Rating MapToEntity(RatingRequest ratingRequest, Rating? rating = null)
         {
             if (rating == null)
