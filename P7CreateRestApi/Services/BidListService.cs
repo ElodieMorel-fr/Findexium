@@ -62,23 +62,23 @@ namespace P7CreateRestApi.Services
             if (bidList == null)
                 bidList = new BidList();
                         
-            bidList.Account = bidListRequest.Account ?? bidList.Account;
-            bidList.BidType = bidListRequest.BidType ?? bidList.BidType;
-            bidList.BidQuantity = bidListRequest.BidQuantity ?? bidList.BidQuantity;
-            bidList.AskQuantity = bidListRequest.AskQuantity ?? bidList.AskQuantity;
-            bidList.Bid = bidListRequest.Bid ?? bidList.Bid;
-            bidList.Ask = bidListRequest.Ask ?? bidList.Ask;
-            bidList.Benchmark = bidListRequest.Benchmark ?? bidList.Benchmark;
-            bidList.BidListDate = bidListRequest.BidListDate ?? bidList.BidListDate;
-            bidList.Commentary = bidListRequest.Commentary ?? bidList.Commentary;
-            bidList.BidSecurity = bidListRequest.BidSecurity ?? bidList.BidSecurity;
-            bidList.BidStatus = bidListRequest.BidStatus ?? bidList.BidStatus;
-            bidList.Trader = bidListRequest.Trader ?? bidList.Trader;
-            bidList.Book = bidListRequest.Book ?? bidList.Book;
-            bidList.DealName = bidListRequest.DealName ?? bidList.DealName;
-            bidList.DealType = bidListRequest.DealType ?? bidList.DealType;
-            bidList.SourceListId = bidListRequest.SourceListId ?? bidList.SourceListId;
-            bidList.Side = bidListRequest.Side ?? bidList.Side;
+            bidList.Account = bidListRequest.Account;
+            bidList.BidType = bidListRequest.BidType;
+            bidList.BidQuantity = bidListRequest.BidQuantity;
+            bidList.AskQuantity = bidListRequest.AskQuantity;
+            bidList.Bid = bidListRequest.Bid;
+            bidList.Ask = bidListRequest.Ask;
+            bidList.Benchmark = bidListRequest.Benchmark;
+            bidList.BidListDate = bidListRequest.BidListDate;
+            bidList.Commentary = bidListRequest.Commentary;
+            bidList.BidSecurity = bidListRequest.BidSecurity;
+            bidList.BidStatus = bidListRequest.BidStatus;
+            bidList.Trader = bidListRequest.Trader;
+            bidList.Book = bidListRequest.Book;
+            bidList.DealName = bidListRequest.DealName;
+            bidList.DealType = bidListRequest.DealType;
+            bidList.SourceListId = bidListRequest.SourceListId;
+            bidList.Side = bidListRequest.Side;
 
             return bidList;
             
