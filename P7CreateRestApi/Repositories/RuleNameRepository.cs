@@ -31,5 +31,12 @@ namespace P7CreateRestApi.Repositories
             _dbContext.RuleNames.Update(ruleName);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task DeleteAsync(RuleName ruleName)
+        {
+            _dbContext.RuleNames.Remove(ruleName);
+            await _dbContext.SaveChangesAsync();
+
+        }
     }
 }

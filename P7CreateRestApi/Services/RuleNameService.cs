@@ -41,6 +41,17 @@ namespace P7CreateRestApi.Services
 
         }
 
+        public async Task<bool> DeleteAsync(int id)
+        {
+            RuleName? ruleName = await _ruleNameRepository.FindByIdAsync(id);
+            if (ruleName == null)
+                return false;
+
+            await _ruleNameRepository.DeleteAsync(ruleName);
+            return true;
+
+        }
+
         private static RuleName MapToEntity(RuleNameRequest ruleNameRequest, RuleName? ruleName = null)
         {
             if (ruleName == null)

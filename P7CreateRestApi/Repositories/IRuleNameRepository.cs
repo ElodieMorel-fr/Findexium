@@ -9,5 +9,7 @@ namespace P7CreateRestApi.Repositories
         Task<RuleName?> FindByIdAsync(int id);
 
         Task UpdateAsync(RuleName ruleName);
+
+        Task DeleteAsync(RuleName ruleName);
     }
 }
