@@ -27,6 +27,19 @@ namespace P7CreateRestApi.Services
 
         }
 
+        public async Task<UserResponse?> UpdateAsync(int id, UserRequest userRequest)
+        {
+            User? existingUser = await _userRepository.FindByIdAsync(id);
+            if (existingUser == null)
+                return null;
+
+            MapToEntity(userRequest, existingUser);   
+            await _userRepository.UpdateAsync(existingUser);
+
+            return MapToResponse(existingUser);
+
+        }
+
         private static User MapToEntity(UserRequest userRequest, User? user = null)
         {
             if (user == null)

@@ -36,15 +36,18 @@ namespace P7CreateRestApi.Controllers
                 return Ok(user);
         }
 
-        /*[HttpPost]
-        [Route("update/{id}")]
-        public IActionResult UpdateUser(int id, [FromBody] User user)
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserRequest userRequest)
         {
-            // TODO: check required fields, if valid call service to update Trade and return Trade list
-            return Ok();
+            UserResponse? user = await _userService.UpdateAsync(id, userRequest);
+            if (user == null)
+                return NotFound();
+
+            return Ok(user);
         }
 
-        [HttpDelete]
+        /*[HttpDelete]
         [Route("{id}")]
         public IActionResult DeleteUser(int id)
         {

@@ -7,5 +7,7 @@ namespace P7CreateRestApi.Services
         Task<UserResponse> CreateAsync(UserRequest userRequest);
 
         Task<UserResponse?> FindByIdAsync(int id);
+
+        Task<UserResponse?> UpdateAsync(int id, UserRequest userRequest);
     }
 }

@@ -7,5 +7,7 @@ namespace P7CreateRestApi.Repositories
         Task<User> AddAsync(User user);
 
         Task<User?> FindByIdAsync(int id);
+
+        Task UpdateAsync(User user);
     }
 }
