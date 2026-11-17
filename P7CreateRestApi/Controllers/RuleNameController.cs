@@ -34,12 +34,15 @@ namespace P7CreateRestApi.Controllers
                 return Ok(ruleName);
         }
 
-        [HttpPost]
-        [Route("update/{id}")]
-        public IActionResult UpdateRuleName(int id, [FromBody] RuleName rating)
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateRuleName(int id, [FromBody] RuleNameRequest ruleNameRequest)
         {
-            // TODO: check required fields, if valid call service to update RuleName and return RuleName list
-            return Ok();
+            RuleNameResponse? ruleName = await _ruleNameService.UpdateAsync(id, ruleNameRequest);
+            if (ruleName == null)
+                return NotFound();
+
+            return Ok(ruleName);
         }
 
         [HttpDelete]

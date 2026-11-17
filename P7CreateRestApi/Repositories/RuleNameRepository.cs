@@ -25,5 +25,11 @@ namespace P7CreateRestApi.Repositories
         {
             return await _dbContext.RuleNames.FindAsync(id);
         }
+
+        public async Task UpdateAsync(RuleName ruleName)
+        {
+            _dbContext.RuleNames.Update(ruleName);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

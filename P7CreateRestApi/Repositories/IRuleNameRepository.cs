@@ -7,5 +7,7 @@ namespace P7CreateRestApi.Repositories
         Task<RuleName> AddAsync(RuleName ruleName);
 
         Task<RuleName?> FindByIdAsync(int id);
+
+        Task UpdateAsync(RuleName ruleName);
     }
 }
