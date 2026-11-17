@@ -24,11 +24,14 @@ namespace P7CreateRestApi.Controllers
         }
 
         [HttpGet]
-        [Route("update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
+        [Route("{id}")]
+        public async Task<IActionResult> GetRuleNameById(int id)
         {
-            // TODO: get RuleName by Id and to model then show to the form
-            return Ok();
+            RuleNameResponse? ruleName = await _ruleNameService.FindByIdAsync(id);
+            if (ruleName == null)
+                return NotFound();
+            else
+                return Ok(ruleName);
         }
 
         [HttpPost]

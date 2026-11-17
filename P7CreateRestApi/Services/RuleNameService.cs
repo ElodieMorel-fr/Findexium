@@ -21,6 +21,13 @@ namespace P7CreateRestApi.Services
             return MapToResponse(ruleName);
         }
 
+        public async Task<RuleNameResponse?> FindByIdAsync(int id)
+        {
+            RuleName? ruleName = await _ruleNameRepository.FindByIdAsync(id);
+            return ruleName == null ? null : MapToResponse(ruleName);
+
+        }
+
         private static RuleName MapToEntity(RuleNameRequest ruleNameRequest, RuleName? ruleName = null)
         {
             if (ruleName == null)
