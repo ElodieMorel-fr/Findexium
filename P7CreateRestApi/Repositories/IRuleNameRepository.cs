@@ -1,0 +1,9 @@
+﻿using P7CreateRestApi.Domain;
+
+namespace P7CreateRestApi.Repositories
+{
+    public interface IRuleNameRepository
+    {
+        Task<RuleName> AddAsync(RuleName ruleName);
+    }
+}
