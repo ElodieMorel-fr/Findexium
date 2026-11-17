@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using P7CreateRestApi.Data;
+﻿using P7CreateRestApi.Data;
 using P7CreateRestApi.Domain;
 
 namespace P7CreateRestApi.Repositories
@@ -24,6 +23,12 @@ namespace P7CreateRestApi.Repositories
         public async Task<Rating?> FindByIdAsync(int id)
         {
             return await _dbContext.Ratings.FindAsync(id);
+        }
+
+        public async Task UpdateAsync(Rating rating)
+        {
+            _dbContext.Ratings.Update(rating);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

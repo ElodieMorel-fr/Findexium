@@ -35,12 +35,16 @@ namespace P7CreateRestApi.Controllers
                 return Ok(rating);
         }
 
-        [HttpPost]
-        [Route("update/{id}")]
-        public IActionResult UpdateRating(int id, [FromBody] Rating rating)
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateRating(int id, [FromBody] RatingRequest ratingRequest)
         {
             // TODO: check required fields, if valid call service to update Rating and return Rating list
-            return Ok();
+            RatingResponse? rating = await _ratingService.UpdateAsync(id, ratingRequest);
+            if (rating == null)
+                return NotFound();
+
+            return Ok(rating);
         }
 
         [HttpDelete]

@@ -29,6 +29,19 @@ namespace P7CreateRestApi.Services
 
         }
 
+        public async Task<RatingResponse?> UpdateAsync(int id, RatingRequest ratingRequest)
+        {
+            Rating? existingRating = await _ratingRepository.FindByIdAsync(id);
+            if (existingRating == null)
+                return null;
+
+            MapToEntity(ratingRequest, existingRating);            
+            await _ratingRepository.UpdateAsync(existingRating);
+
+            return MapToResponse(existingRating);
+
+        }
+
         private static Rating MapToEntity(RatingRequest ratingRequest, Rating? rating = null)
         {
             if (rating == null)

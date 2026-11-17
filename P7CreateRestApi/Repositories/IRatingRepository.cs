@@ -7,5 +7,7 @@ namespace P7CreateRestApi.Repositories
         Task<Rating> AddAsync(Rating rating);
 
         Task<Rating?> FindByIdAsync(int id);
+
+        Task UpdateAsync(Rating rating);
     }
 }
