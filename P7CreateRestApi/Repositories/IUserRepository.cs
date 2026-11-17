@@ -9,5 +9,7 @@ namespace P7CreateRestApi.Repositories
         Task<User?> FindByIdAsync(int id);
 
         Task UpdateAsync(User user);
+
+        Task DeleteAsync(User user);
     }
 }

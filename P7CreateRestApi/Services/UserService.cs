@@ -40,6 +40,17 @@ namespace P7CreateRestApi.Services
 
         }
 
+        public async Task<bool> DeleteAsync(int id)
+        {
+            User? user = await _userRepository.FindByIdAsync(id);
+            if (user == null)
+                return false;
+
+            await _userRepository.DeleteAsync(user);
+            return true;
+
+        }
+
         private static User MapToEntity(UserRequest userRequest, User? user = null)
         {
             if (user == null)

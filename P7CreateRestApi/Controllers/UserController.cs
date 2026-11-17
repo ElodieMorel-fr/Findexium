@@ -47,23 +47,16 @@ namespace P7CreateRestApi.Controllers
             return Ok(user);
         }
 
-        /*[HttpDelete]
+        [HttpDelete]
         [Route("{id}")]
-        public IActionResult DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            User user = _userRepository.FindById(id);
-            
-            if (user == null)
-                throw new ArgumentException("Invalid user Id:" + id);
+            if (!await _userService.DeleteAsync(id))
+                return NotFound("Invalid user Id:" + id);
 
             return Ok();
+
         }
-
-        [HttpGet]
-        [Route("/secure/article-details")]
-        public async Task<ActionResult<List<User>>> GetAllUserArticles()
-        {
-            return Ok();
-        }*/
+        
     }
 }
