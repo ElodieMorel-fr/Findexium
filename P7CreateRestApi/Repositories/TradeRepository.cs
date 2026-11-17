@@ -20,5 +20,10 @@ namespace P7CreateRestApi.Repositories
             return trade;
 
         }
+
+        public async Task<Trade?> FindByIdAsync(int id)
+        {
+            return await _dbContext.Trades.FindAsync(id);
+        }
     }
 }

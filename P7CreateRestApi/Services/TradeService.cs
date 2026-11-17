@@ -23,6 +23,13 @@ namespace P7CreateRestApi.Services
             return MapToResponse(trade);
         }
 
+        public async Task<TradeResponse?> FindByIdAsync(int id)
+        {
+            Trade? trade = await _tradeRepository.FindByIdAsync(id);
+            return trade == null ? null : MapToResponse(trade);
+
+        }
+
         private static Trade MapToEntity(TradeRequest tradeRequest, Trade? trade = null)
         {
             if (trade == null)

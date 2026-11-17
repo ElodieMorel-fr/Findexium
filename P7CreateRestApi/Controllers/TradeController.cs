@@ -24,11 +24,14 @@ namespace P7CreateRestApi.Controllers
         }
 
         [HttpGet]
-        [Route("update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
+        [Route("{id}")]
+        public async Task<IActionResult> GetTradeById(int id)
         {
-            // TODO: get Trade by Id and to model then show to the form
-            return Ok();
+            TradeResponse? trade = await _tradeService.FindByIdAsync(id);
+            if (trade == null)
+                return NotFound();
+            else
+                return Ok(trade);
         }
 
         [HttpPost]
