@@ -1,0 +1,58 @@
+using Microsoft.AspNetCore.Mvc;
+using P7CreateRestApi.Models;
+using P7CreateRestApi.Services;
+
+namespace P7CreateRestApi.Controllers
+{
+    [ApiController]
+    [Route("[controller]")]
+    public class CurvePointController : ControllerBase
+    {
+        private readonly ICurvePointService _curvePointService;
+
+        public CurvePointController(ICurvePointService curvePointService)
+        {
+            _curvePointService = curvePointService;
+        }
+       
+        [HttpPost]        
+        public async Task<IActionResult> AddCurvePoint([FromBody]CurvePointRequest curvePointRequest)
+        {
+            CurvePointResponse newCurvePoint = await _curvePointService.CreateAsync(curvePointRequest);
+            return Ok(newCurvePoint);
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public async Task<IActionResult> GetCurvePointById(int id)
+        {
+            CurvePointResponse? curvePoint = await _curvePointService.FindByIdAsync(id);
+            if (curvePoint == null)
+                return NotFound();
+            else
+                return Ok(curvePoint);
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateCurvePoint(int id, [FromBody] CurvePointRequest curvePointRequest)
+        {
+            // TODO: check required fields, if valid call service to update Curve and return Curve list
+            CurvePointResponse? curvePoint = await _curvePointService.UpdateAsync(id, curvePointRequest);
+            if (curvePoint == null)
+                return NotFound();
+
+            return Ok(curvePoint);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<IActionResult> DeleteCurvePoint(int id)
+        {
+            if (!await _curvePointService.DeleteAsync(id))
+                return NotFound();
+
+            return Ok();
+        }
+    }
+}
