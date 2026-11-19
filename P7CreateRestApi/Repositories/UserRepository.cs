@@ -1,39 +1,43 @@
 using P7CreateRestApi.Data;
 using P7CreateRestApi.Domain;
-using Microsoft.EntityFrameworkCore;
 
 namespace P7CreateRestApi.Repositories
 {
-    public class UserRepository
+    public class UserRepository : IUserRepository
     {
-        public LocalDbContext DbContext { get; }
+        private readonly LocalDbContext _dbContext;
 
         public UserRepository(LocalDbContext dbContext)
         {
-            DbContext = dbContext;
+            _dbContext = dbContext;
+        }      
+
+        public async Task<User> AddAsync(User user)
+        {
+            await _dbContext.Users.AddAsync(user);
+            await _dbContext.SaveChangesAsync();
+
+            return user;
+
         }
 
-        //TODO EML : User management will be implemented in story 6
-        /*public User FindByUserName(string userName)
+        public async Task<User?> FindByIdAsync(int id)
         {
-            return DbContext.Users.Where(user => user.UserName == userName)
-                                  .FirstOrDefault();
-        }*/
-
-        //TODO EML : User management will be implemented in story 6
-        /*
-        public async Task<List<User>> FindAll()
-        {
-            return await DbContext.Users.ToListAsync();
-        }*/
-
-        public void Add(User user)
-        {
+            return await _dbContext.Users.FindAsync(id);
         }
 
-        public User FindById(int id)
+        public async Task UpdateAsync(User user)
         {
-            return null;
+            _dbContext.Users.Update(user);
+            await _dbContext.SaveChangesAsync();
         }
+
+        public async Task DeleteAsync(User user)
+        {
+            _dbContext.Users.Remove(user);
+            await _dbContext.SaveChangesAsync();
+
+        }
+
     }
 }

@@ -1,85 +1,62 @@
-using P7CreateRestApi.Domain;
-using P7CreateRestApi.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using P7CreateRestApi.Models;
+using P7CreateRestApi.Services;
+using System.Security.Cryptography;
 
 namespace P7CreateRestApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class UserController : ControllerBase
-    {
-        private UserRepository _userRepository;
+    {        
+        private readonly IUserService _userService;
 
-        public UserController(UserRepository userRepository)
+        public UserController(IUserService userService)
         {
-            _userRepository = userRepository;
+     
+            _userService = userService;
+        }
+        
+
+        [HttpPost]        
+        public async Task<IActionResult> AddUser([FromBody] UserRequest userRequest)
+        {
+            UserResponse newUser = await _userService.CreateAsync(userRequest);
+            return Ok(newUser);
         }
 
         [HttpGet]
-        [Route("list")]
-        public IActionResult Home()
+        [Route("{id}")]
+        public async Task<IActionResult> GetUserById(int id)
         {
-            return Ok();
-        }
-
-        [HttpGet]
-        [Route("add")]
-        public IActionResult AddUser([FromBody]User user)
-        {
-            return Ok();
-        }
-
-        [HttpGet]
-        [Route("validate")]
-        public IActionResult Validate([FromBody]User user)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest();
-            }
-           
-           _userRepository.Add(user);
-
-            return Ok();
-        }
-
-        [HttpGet]
-        [Route("update/{id}")]
-        public IActionResult ShowUpdateForm(int id)
-        {
-            User user = _userRepository.FindById(id);
-            
+            UserResponse? user = await _userService.FindByIdAsync(id);
             if (user == null)
-                throw new ArgumentException("Invalid user Id:" + id);
-
-            return Ok();
+                return NotFound("Invalid user Id:" + id);
+            else
+                return Ok(user);
         }
 
-        [HttpPost]
-        [Route("update/{id}")]
-        public IActionResult UpdateUser(int id, [FromBody] User user)
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserRequest userRequest)
         {
-            // TODO: check required fields, if valid call service to update Trade and return Trade list
-            return Ok();
+            UserResponse? user = await _userService.UpdateAsync(id, userRequest);
+            if (user == null)
+                return NotFound();
+
+            return Ok(user);
         }
 
         [HttpDelete]
         [Route("{id}")]
-        public IActionResult DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            User user = _userRepository.FindById(id);
-            
-            if (user == null)
-                throw new ArgumentException("Invalid user Id:" + id);
+            if (!await _userService.DeleteAsync(id))
+                return NotFound("Invalid user Id:" + id);
 
             return Ok();
-        }
 
-        [HttpGet]
-        [Route("/secure/article-details")]
-        public async Task<ActionResult<List<User>>> GetAllUserArticles()
-        {
-            return Ok();
         }
+        
     }
 }
