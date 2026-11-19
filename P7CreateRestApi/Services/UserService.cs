@@ -57,7 +57,8 @@ namespace P7CreateRestApi.Services
                 user = new User();
 
             user.UserName = userRequest.UserName;
-            user.Password = userRequest.Password;
+            if (!string.IsNullOrEmpty(userRequest.Password))
+                user.Password = userRequest.Password;
             user.FullName = userRequest.FullName;
             user.Role = userRequest.Role;            
 
@@ -70,8 +71,7 @@ namespace P7CreateRestApi.Services
             return new UserResponse()
             {
                 Id = user.Id,
-                UserName = user.UserName,
-                Password = user.Password,
+                UserName = user.UserName,               
                 FullName = user.FullName,
                 Role = user.Role
                 
