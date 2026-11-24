@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using P7CreateRestApi.Data;
 using P7CreateRestApi.Domain;
 using P7CreateRestApi.Models;
 
@@ -8,23 +10,22 @@ namespace P7CreateRestApi.Services
     {   
         private readonly UserManager<User> _userManager;
         private readonly RoleManager<IdentityRole<int>> _roleManager;
-        public UserService(UserManager<User> userManager, RoleManager<IdentityRole<int>> roleManager)
+        private readonly LocalDbContext _dbContext;
+        public UserService(UserManager<User> userManager, RoleManager<IdentityRole<int>> roleManager, LocalDbContext dbContext)
         {     
             _userManager = userManager;
             _roleManager = roleManager;
+            _dbContext = dbContext;
         }
 
         public async Task<UserResponse> CreateAsync(UserRequest userRequest)
-        {           
-            if (await _roleManager.FindByNameAsync(userRequest.Role) is null)
-                throw new ArgumentException($"Rôle incorrecte : '{userRequest.Role}' n'existe pas en base!");                      
+        {  
+            User user = MapToEntity(userRequest);
 
-            User user = MapToEntity(userRequest);            
-            IdentityResult result = await _userManager.CreateAsync(user);
-            if (!result.Succeeded)                
-                throw new Exception(string.Join(" ; ", result.Errors.Select(x => x.Description).ToList()));               
-
+            await using var transaction = await _dbContext.Database.BeginTransactionAsync();
+            ThrowIfIdentityFailed(await _userManager.CreateAsync(user, userRequest.Password));           
             await SetOrChangeUserRoleAsync(user, userRequest.Role);
+            await transaction.CommitAsync();
 
             return await MapToResponseAsync(user);
         }
@@ -37,21 +38,22 @@ namespace P7CreateRestApi.Services
         }
 
         public async Task<UserResponse?> UpdateAsync(int id, UserRequest userRequest)
-        {
-            if (await _roleManager.FindByNameAsync(userRequest.Role) is null)
-                throw new ArgumentException($"Rôle incorrecte : '{userRequest.Role}' n'existe pas en base!");
-
+        {                  
             User? existingUser = await _userManager.FindByIdAsync(id.ToString());
             if (existingUser == null)
-                return null;                     
-
+                return null;
             MapToEntity(userRequest, existingUser);
-            IdentityResult result = await _userManager.UpdateAsync(existingUser);
-            if (!result.Succeeded)
-                throw new Exception(string.Join(" ; ", result.Errors.Select(x => x.Description).ToList()));
 
+            await using var transaction = await _dbContext.Database.BeginTransactionAsync();
+            ThrowIfIdentityFailed(await _userManager.UpdateAsync(existingUser));            
             await SetOrChangeUserRoleAsync(existingUser, userRequest.Role);
-
+            if(!string.IsNullOrWhiteSpace(userRequest.Password))
+            {                
+                ThrowIfIdentityFailed(await _userManager.RemovePasswordAsync(existingUser));
+                ThrowIfIdentityFailed(await _userManager.AddPasswordAsync(existingUser, userRequest.Password));                
+            }
+            await transaction.CommitAsync();
+            
             return await MapToResponseAsync(existingUser);
 
         }
@@ -72,9 +74,7 @@ namespace P7CreateRestApi.Services
             if (user == null)
                 user = new User();
 
-            user.UserName = userRequest.UserName;
-            if (!string.IsNullOrEmpty(userRequest.Password))
-                user.PasswordHash = userRequest.Password; //TODO EML : gérer le hash
+            user.UserName = userRequest.UserName;            
             user.FullName = userRequest.FullName;            
 
             return user;                
@@ -108,11 +108,15 @@ namespace P7CreateRestApi.Services
                 return;
 
             if (currentRoles.Any())
-                await _userManager.RemoveFromRolesAsync(user, currentRoles);
-                        
-            IdentityResult result = await _userManager.AddToRoleAsync(user, role);
+                ThrowIfIdentityFailed(await _userManager.RemoveFromRolesAsync(user, currentRoles));
+
+            ThrowIfIdentityFailed(await _userManager.AddToRoleAsync(user, role));            
+        }
+
+        private void ThrowIfIdentityFailed(IdentityResult result)
+        {
             if (!result.Succeeded)
-                throw new Exception(string.Join(" ; ", result.Errors.Select(x => x.Description).ToList()));
+                throw new Exception(string.Join(" | ", result.Errors.Select(x => x.Description).ToList()));
         }
     }
 }

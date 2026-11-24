@@ -22,6 +22,14 @@ builder.Services.AddIdentityCore<User>()
     .AddRoles<IdentityRole<int>>()
     .AddEntityFrameworkStores<LocalDbContext>();
 
+builder.Services.Configure<IdentityOptions>(options => {
+    options.Password.RequireUppercase = true;
+    options.Password.RequiredLength = 8;
+    options.Password.RequireDigit = true;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireLowercase = false;
+});
+
 builder.Services.AddScoped<IBidListRepository, BidListRepository>();
 builder.Services.AddScoped<IBidListService, BidListService>();
 builder.Services.AddScoped<ICurvePointRepository, CurvePointRepository>();
