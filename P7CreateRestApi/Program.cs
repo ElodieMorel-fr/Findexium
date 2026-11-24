@@ -51,6 +51,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+using (var scope = app.Services.CreateScope())
+{
+    var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole<int>>>();
+    await DataSeeder.SeedAsync(roleManager);
+}
+
 app.UseHttpsRedirection();
 
 app.MapControllers();
