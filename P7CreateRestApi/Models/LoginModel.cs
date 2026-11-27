@@ -1,7 +1,8 @@
 ﻿namespace P7CreateRestApi.Models
 {
     public class LoginModel
-    {
-        // TODO: implement properties needeed for login model.
+    {     
+        public string UserName { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
     }
 }
